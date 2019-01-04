@@ -1,0 +1,18 @@
+
+<div class="jumbotron">
+      <div class="container">
+            <p>[% message %]</p>
+      </div>
+ </div>[%# end of jumbotron %]
+
+    <div class="container">
+    <div class="row">
+        <div class="col-md-4">
+    <p><a href=[% surl %]>阅读原文</a></p>
+        </div>
+    </div>
+    <hr>
+
+    [% PROCESS site/footer %]
+</div>[%# end of jumbotron %]
+<!-- END of welcome -->
