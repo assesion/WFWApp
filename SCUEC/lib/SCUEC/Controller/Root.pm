@@ -73,7 +73,6 @@ sub EmployeeAuth : Local {
         }
     }
     $c->response->body("$userid 绑定失败！");
-#    $c->stash->{template} = 'welcome.tt2';
 }
 
 =head2 end
