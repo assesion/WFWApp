@@ -1,0 +1,53 @@
+<div class="jumbotron">
+     <div class="container">
+     <h2 class="text-center">中央和国家机关工作人员赴地方差旅住宿费标准明细表 <br> <small>(财行[2016]71号)</small> <br></h2>
+     <h5 class="text-right">单位:元/人•天</h5>
+     <ul class="nav pull-right">
+			<li class="divider-vertical">
+			</li>
+			<li class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">省份选择<strong class="caret"></strong></a>
+				<ul class="dropdown-menu" style="height:300px;overflow:scroll">
+                    [% FOREACH i IN [ 1 .. json.size ] -%]
+						<li>
+							<a href=[% "?i=" _ i %] >[% json.$i.add %]</a>
+						</li>
+					[% END -%]
+				</ul>
+			</li>
+		</ul>
+  [% value = json.$select %]
+  <p>出差地点：【[% value.add %]】</p>
+  <p><a href=[% surl %] class="btn btn-primary btn-lg" role="button">阅读原文 &raquo;</a></p>
+ </div>
+</div>[%# end of jumbotron %]
+
+<div class="container">
+ <!-- Example row of columns -->
+ <div class="row">
+  <div class=[% value.w.first ? "col-md-6" : "col-md-12" %]>
+   <h3>住宿费标准</h3>
+   [% FOREACH n = value.n %]
+    <p>【[% n.city %]】住宿费标准</p>
+    <p>【部  级】[% n.l1 %]</p>
+    <p>【司局级】[% n.l2 %]</p>
+    <p>【其  他】[% n.l3 %]</p>
+   [% END %]
+  </div>
+  [% IF value.w.first %]
+   <div class="col-md-6">
+    <h3>旺季浮动标准</h3>
+    [% FOREACH w = value.w %]
+     <p>【[% w.city %]】旺季（[% w.date %]）上浮价</p>
+     <p>【部  级】[% w.l1 %]</p>
+     <p>【司局级】[% w.l2 %]</p>
+     <p>【其  他】[% w.l3 %]</p>
+    [% END %]
+   </div>
+  [% END %]
+ </div>
+ <hr>
+
+ [% PROCESS site/footer %]
+</div>[%# end of jumbotron %]
+<!-- END of welcome -->
