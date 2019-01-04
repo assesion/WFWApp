@@ -1,0 +1,104 @@
+<script src="/static/js/2018/12/19/gn.js"></script>
+<link rel="stylesheet" href="/static/css/2018/12/19/ys.css">
+
+<div class="col-md-8 col-md-offset-2">
+   <div class="page-header">
+<h1>双零团队招新调查问卷</h1>
+</div>
+
+<div class="panel panel-default">
+<div class="panel-body">
+<label for="name">单选题</label>
+<!-- 单选题开始 -->
+[%FOREACH var IN danx%]
+<p id="0[%var.TMBH%]"><strong>[%var.TMBH%]、[%var.TMNR%]</strong></p>
+<div class="bk">
+<div class="da">
+[%IF var.DAA%]
+<div class="radio">
+<label>
+<input type="radio" name="[%var.TMBH%]" id="A[%var.TMBH%]" value="option1">[%var.DAA%]
+</label>
+</div>
+[%END%]
+[%IF var.DAB%]
+<div class="radio">
+<label>
+<input type="radio" name="[%var.TMBH%]" id="B[%var.TMBH%]" value="option1">[%var.DAB%]
+</label>
+</div>
+[%END%]
+[%IF var.DAC%]
+<div class="radio">
+<label>
+<input type="radio" name="[%var.TMBH%]" id="C[%var.TMBH%]" value="option1">[%var.DAC%]
+</label>
+</div>
+[%END%]
+[%IF var.DAD%]
+<div class="radio">
+<label>
+<input type="radio" name="[%var.TMBH%]" id="D[%var.TMBH%]" value="option1">[%var.DAD%]
+</label>
+</div>
+[%END%]
+</div>
+</div>
+[%END%]
+<!-- 单选题结束 -->
+</br>
+<label for="name" style="font-size: 20px;">多选题</label>
+<!-- 多选题开始 -->
+[%FOREACH var IN duox%]
+<p id="0[%var.TMBH%]"><strong>[%var.TMBH%]、[%var.TMNR%]</strong></p>
+<div class="bk">
+[%IF var.DAA%]
+<div class="da">
+<div class="checkbox">
+<label><input type="checkbox" name="[%var.TMBH%]" id="A[%var.TMBH%]" value="">[%var.DAA%]</label>
+</div>
+[%END%]
+[%IF var.DAB%]
+<div class="checkbox">
+<label><input type="checkbox" name="[%var.TMBH%]" id="B[%var.TMBH%]" value="">[%var.DAB%]</label>
+</div>
+[%END%]
+[%IF var.DAC%]
+<div class="checkbox">
+<label><input type="checkbox" name="[%var.TMBH%]" id="C[%var.TMBH%]" value="">[%var.DAC%]</label>
+</div>
+[%END%]
+[%IF var.DAD%]
+<div class="checkbox">
+<label><input type="checkbox" name="[%var.TMBH%]" id="D[%var.TMBH%]" value="">[%var.DAD%]</label>
+</div>
+[%END%]
+</div>
+</div>
+[%END%]
+<!-- 多选题结束 -->
+</br>
+<form role="form">
+<div class="form-group">
+<label for="name" style="font-size: 20px;">问答题</label>
+<!-- 问答题开始 -->
+[%FOREACH var IN jd%]
+<p id="0[%var.TMBH%]"><strong>[%var.TMBH%]、[%var.TMNR%]</strong>（200字以内）</p>
+<textarea id=[%var.TMBH%] class="form-control" rows="3" maxlength="200" ></textarea>
+<br/>
+[%END%]
+<!-- 问答题结束 -->
+</div>
+</form>
+</div>
+<div class="an">
+<button type="button" class="btn btn-default" onclick="test()" id="tj">提交</button>
+</div>
+</br>
+        <h5>
+            <strong>请注意：</strong>
+            所有信息以群里发布的为准，大家填写后一定要记得加群哦！(874776403)
+        </h5> 
+</br>
+</div>
+ [% PROCESS site/f00ter %]
