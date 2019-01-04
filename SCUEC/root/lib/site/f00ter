@@ -1,0 +1,7 @@
+<!-- BEGIN site/footer -->
+ <footer>
+ <div class="footer-fix ">
+        <p class="text-center" id="copyright">&copy; 2018 双零团队</p>
+ </div>
+ </footer>
+<!-- END site/footer -->
