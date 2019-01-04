@@ -1,0 +1,276 @@
+    <!-- 引入 ECharts 文件 -->
+	<script src="/static/js/echarts.min.js"></script>
+	<link href="/static/css/bootstrap.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/static/css/custom-styles.css" rel="stylesheet" />
+    <!-- 引入 ECharts 文件 -->
+    <script src="/static/js/echarts.min.js"></script>
+    <!-- jQuery Js -->
+    <script src="/static/js/jquery-1.11.1.min.js"></script>
+
+[% title = '中南民族大学' _ date _ '年学院迎新' %]
+<div class="jumbotron">
+    <div id="wrapper">
+        <div id="container">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+                        <div class="panel panel-default" id="main" style="width: auto;height:300px;">
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+                        <div class="panel panel-default" id="main1" style="width: auto;height:450px;">
+                        </div>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+ [% PROCESS site/footer %]
+</div>[%# end of jumbotron %]
+<!-- END of welcome -->
+	<form id="Form"  >
+	<input type="hidden" id="Id", value=[%dwdm%]>
+	</form>  
+
+<!-- 到校情况饼图 -->
+<script type="text/javascript">
+    var chart = [];
+    var pieChart = echarts.init(document.getElementById('main'));
+    var option = {
+    title : {
+        text: '[% pie.DWJC %]新生到校情况',
+        textStyle: {
+            fontSize: '18',
+            color:'#666666'
+        },
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        top: 25,
+        data: ['已到校','未到校'],
+    },
+    series : [
+        {
+            name: '新生到校情况',
+            type: 'pie',
+            radius : '50%',
+            center: ['50%', '60%'],
+            data:[
+                {value:[%pie.SDRS%], 
+                name:'已到校',
+                itemStyle: {
+                    color: '#39AECF'
+                    },
+                label: {
+                    normal: {
+                        color: 'rgba(0, 0, 0,0.8)',
+                        fontSize: 13,
+                        formatter: '{b}：{c}\n\n比例：{d}%'
+                    }
+                },
+                },
+                {value:[%pie.YDRS-pie.SDRS%],
+                 name:'未到校',
+                 itemStyle: {
+                    color: '#057D9F'
+                    },
+                label: {
+                    normal: {
+                        color: 'rgba(0, 0, 0,0.8)',
+                        fontSize: 13,
+                        formatter: '{b}：{c}\n\n比例：{d}%'
+                    }
+                },
+                },
+            ],
+        }
+    ]
+};
+
+    pieChart.setOption(option);
+    chart.push(pieChart);
+
+var myChart = echarts.init(document.getElementById('main1'));
+var baifenbi = [[%FOREACH I IN data%][%I.BDL%],[%END%]];
+var grayBar = [[%FOREACH I IN data%]1,[%END%]];
+var zongrenshu = [[%FOREACH I IN data%][%I.YDRS%],[%END%]];
+var yidaorenshu = [[%FOREACH I IN data%][%I.SDRS%],[%END%]];
+var banji = [[%FOREACH I IN data%]'[%I.ZYMC%]',[%END%]];
+option = {
+    title: {
+        text: '各专业到校情况',
+        textStyle: {
+            fontSize: '18',
+            color:'#666666'
+        },
+        left: 'center'
+    },
+    color: ['#39AECF'],
+   grid: {
+         left: '10%',
+         right: '10%',
+         bottom: '2%',
+         top: '7%',
+         containLabel: true
+     },
+    xAxis: [{
+            show: false,
+        },
+        {
+            show: false,
+        }
+    ],
+    yAxis: {
+        type: 'category',
+        axisLabel: {
+            show: false, 
+        },
+        itemStyle: {
+        },
+        axisTick: {
+            show: false,
+        },
+        axisLine: {
+            show: false,
+        },
+        data: banji,
+    },
+    series: [
+        {
+            show: true,
+            type: 'bar',
+            barGap: '-100%',
+            barWidth: '20px', 
+            itemStyle: {
+                normal: {
+                    barBorderRadius: 15,
+                    color: 'rgba(102, 102, 102,0.5)'
+                },
+            },
+            z:1,
+            data: grayBar,
+        },
+        {
+            show: true,
+            type: 'bar',
+            barGap: '-100%',
+            barWidth: '20px',
+            itemStyle: {
+                normal: {
+                    barBorderRadius: 20,
+                },
+            },
+            max: 1,
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: '10',
+                        color: '#fff',
+                    },
+                    position: ['50%', '15%'],
+                    formatter: function(data) {
+                        return (baifenbi[data.dataIndex] * 100.00).toFixed(2) + '%';
+                    },
+                }
+            },
+            labelLine: {
+                show: false,
+            },
+            z:2,
+            data: baifenbi,
+        },
+        {
+            show: true,
+            type: 'bar',
+            xAxisIndex: 1,
+            barGap: '-100%',
+            barWidth: '20px',
+            itemStyle: {
+                normal: {
+                    barBorderRadius: 20,
+                    color: 'rgba(22,203,115,0.05)'
+                },
+            },
+            label: {
+                normal: {
+                    show: true,
+                    position: [0, '-20px'],
+                    rich: {
+                        black: {
+                            color: '#000',
+                            fontSize: '13',
+                        },
+                        green: {
+                            color: '#70DDA7',
+                            fontSize: '13',
+                        },
+                        yellow: {
+                            fontSize: '13',
+                            color: '#FEC735',
+                        },
+                    },
+                    formatter: function(data) {
+                        return '{black|' + banji[data.dataIndex] + '}' +'   ' + '{black|应到:}{yellow|' + zongrenshu[data.dataIndex]  + '}{black|人,已到:}' + '{green|' + yidaorenshu[data.dataIndex]  + '人}';
+                    },
+                }
+            },
+            data: zongrenshu
+        }
+    ]
+};
+
+    myChart.setOption(option);
+    chart.push(myChart);
+    window.onresize = function(){       
+        for(var i = 0; i < chart.length; i++){
+        chart[i].resize();
+    }
+    }
+
+      setInterval(
+           function reload() {
+           $.ajax({
+          url:'',
+          type:"POST",
+          data:{'id':'%%23%%281654$%123*'},
+          success:function(data){
+          var x = eval('('+data+')'); 
+          var SDRS = new Array();
+          var pie = new Array();
+          var BDL = new Array();
+          for(var i=0;i<x.zy.length;i++)
+          {
+	var data =parseInt(x.zy[i].SDRS); 
+          	SDRS.push(x.zy[i].SDRS);
+          }
+          for(var i=0;i<x.zy.length;i++)
+          {
+	var data =parseFloat(x.zy[i].BDL); 
+          	BDL.push(data); 
+          }
+          pie.push(x.pie.SDRS);
+         var option = myChart.getOption();
+                yidaorenshu = SDRS;  
+		baifenbi = BDL;
+		option.series[1].data = BDL;
+		myChart.setOption(option);   
+         var options = pieChart.getOption();
+                     options.series[0].data[0].value = x.pie.SDRS;
+                     options.series[0].data[1].value = x.pie.YDRS-x.pie.SDRS;
+                     pieChart.setOption(options);   
+             },
+          });
+      } ,8000);
+</script>
