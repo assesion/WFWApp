@@ -1,0 +1,148 @@
+    <meta charset="utf-8" />
+    <meta name=description content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    [% title = '中南民族大学' _ date _ '年志愿者迎新' %]
+	<script src="/static/js/echarts.min.js"></script>
+	<link href="/static/css/bootstrap.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/static/css/custom-styles.css" rel="stylesheet" />
+    <!-- 引入 ECharts 文件 -->
+    <script src="/static/js/echarts.min.js"></script>
+    <!-- jQuery Js -->
+    <script src="/static/js/jquery-1.11.1.min.js"></script>
+
+    <link href="/static/css/bootstrap-switch.min.css" rel="stylesheet" />
+    <!-- jQuery Js -->
+    <script src="/static/js/jquery-1.11.1.min.js"></script>
+    <!-- switch Js -->
+    <script src="/static/js/bootstrap-switch.js"></script>
+    <!-- Bootstrap Js -->
+    <style>
+        .table th, .table td { 
+        text-align: center; 
+        vertical-align: middle!important;
+        }
+    </style>
+<div class="jumbotron">
+    <div id="wrapper">  
+        <div id="container">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading text-center">
+                                新 生 到 校 情 况
+                            </div> 
+                            <div class="panel-body">   
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>姓名</th>
+                                                <th>性别</th>
+                                                <th>到校情况</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+										[%i=1%]
+										[%FOREACH ITEM IN data%]
+										<tr>
+										<td id=xm[%i%]>[%ITEM.XM%]</td>
+										<td>[%ITEM.XB%]</td>
+										<td style='display:none' id=xh[%i%]>[%ITEM.XH%]</td>
+										<td>
+										[%IF ITEM.SFDX == '0'%]
+										<input name="status" type="checkbox" data-size="small" id=[%i%]>
+										[%ELSE%]
+										<input name="status1" type="checkbox" data-size="small" >
+										[%END%]
+										</td>
+										[%i = i + 1%]
+										[%END%]
+										</tr>
+										</tbody>
+										</table>
+										</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+ [% PROCESS site/footer %]
+</div>[%# end of jumbotron %]
+<!-- END of welcome -->    
+
+<script type="text/javascript">
+    $('[name="status"]').bootstrapSwitch({  
+    offText:"未报道",  
+    onText:"已报道",  
+    offColor:"success", 
+    onColor:"info",   
+    size:"small", 
+    onSwitchChange:function del() {
+			var msg = "请确定该生已报道！";
+				if (confirm(msg)==true){
+				var id = this.id;
+				var x =	'xh' + parseInt(id);
+				var XH = document.getElementById(x).innerText;
+				x  = 'xm' + parseInt(id);
+				var XM  = document.getElementById(x).innerText;
+				var data = '{"XM":"xs' + '","XH":"' + XH +'"}';
+				var flag=0;
+				$.ajax({
+				url:"",
+				type:'post',
+				data:{"data":data},
+				success:function(data){
+				if(data==='1')
+				{	
+					flag = 1;
+				}
+				if(data==='0')
+				{
+				alert('提交失败，请重试');
+				}
+				window.location.reload();
+				},
+				error:function(data){
+				alert('提交失败，请重试');
+				window.location.reload();
+				},
+				});
+				if(flag){
+				return true;
+				}
+				else{
+				return false;
+				}
+				}else{
+				return false;
+				}
+			}
+   			 })
+</script>
+<script type="text/javascript">
+    $('[name="status1"]').bootstrapSwitch({  
+    offText:"已报道",  
+    onText:"未报道",  
+    offColor:"info", 
+    onColor:"success",   
+    size:"small",  
+    inverse:"true", 
+    disabled:"true",
+    onSwitchChange:function del() {
+			var msg = "请确定该生已报道！";
+				if (confirm(msg)==true){
+				return true;
+				}else{
+				return false;
+				}
+			}
+   			 })
+</script>
