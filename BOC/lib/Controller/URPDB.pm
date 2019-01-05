@@ -380,6 +380,8 @@ sub search : Private {
             my $dbh = DBI->connect($db, $user, $pwd) or $rtncode = "000数据库连接失败！";
             my $i = 0;
             if ( $dbh ) {
+                $dbh->{LongReadLen}   = 5242880;
+                $dbh->{LongTruncOk}   = 0;                
                 my $sth = $dbh->prepare("$sql");
                 $sth->execute() or $rtncode = "001数据库查询失败！";
                 while ( my $data = $sth->fetchrow_hashref ) {
