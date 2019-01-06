@@ -27,7 +27,7 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
-	my $reply;
+    my $reply;
 	my $sql="select * from v_gzlcx_xx";
 	my $data = $c->forward('/urpdb/search', ["$sql"]);
 	    if ( $data ) {
@@ -41,6 +41,7 @@ sub index :Path :Args(0) {
 		}
     $c->response->body(encode_json($reply));
 }
+
 
 
 =encoding utf8
