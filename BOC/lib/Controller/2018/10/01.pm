@@ -31,7 +31,6 @@ sub index :Path :Args(0) {
 	my $reply;
 	my $sql = "select zgh,xm,dw,qx from v_gzlcx_gr where zgh=\'$json->{ZGH}\' order by qx desc";
 	my $data = $c->forward('/urpdb/search', ["$sql"]);
-#    $data = $data->[0];
     if ( $data ) {
 	    $reply->{"RTN_CODE"} = "00";
         $reply->{"RTN_MSG"} = "成功！";
