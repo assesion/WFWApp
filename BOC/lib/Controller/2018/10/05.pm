@@ -21,8 +21,8 @@ Catalyst Controller.
 
 
 =head2 index
-根据单位代码DW查询该单位所有职工的姓名
-请求参数：{"DWDM":"123"}
+根据单位代码DWMC查询该单位所有职工的姓名
+请求参数：{"DWMC":"123"}
 响应参数：{"RTN_CODE":"01",DATA:[{"ZGH":" ","XM":" ","XN":" ","ZC":" ","DW":" ","LL":" ","SY":" ","T":" ","LW":" ","CXZX": " ","GJC":" ","ZGS":" "}],"RTN_MSG":"成功！"}
 =cut
 
@@ -30,8 +30,8 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
     my $json = $c->req->body_data;
 	my $reply;
-	$json->{DW} =encode("gbk",decode("utf8",$json->{DW}));
-	my $sql = "select distinct (xm) from v_gzlcx_gr where dw=\'$json->{DW}\'";
+#	$json->{DW} =encode("gbk",decode("utf8",$json->{DW}));
+	my $sql = "select distinct (xm) from v_gzlcx_gr where dwmc=\'$json->{DWMC}\'";
 	my $data = $c->forward('/urpdb/search', ["$sql"]);
 	if ( $data ) {
 	    $reply->{"RTN_CODE"} = "00";
