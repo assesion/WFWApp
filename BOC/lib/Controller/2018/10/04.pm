@@ -28,9 +28,9 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
-	my $reply;
+    my $reply;
 	my $json = $c->req->body_data;
-    $json->{XM} =encode("gbk",decode("utf8",$json->{XM}));
+#    $json->{XM} =encode("gbk",decode("utf8",$json->{XM}));
 	my $sql = "select xm,sum(ll) ll,sum(sy) sy,sum(qt) qt,sum(lw) lw,sum(cxzx) cxzx,sum(gjc) gjc,sum(zgs) zgs from v_gzlcx_gr where xm=\'$json->{XM}\' group by xm ";
 	my $data = $c->forward('/urpdb/search',["$sql"]);
 	if ( $data ) {
