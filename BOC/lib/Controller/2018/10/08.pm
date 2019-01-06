@@ -28,8 +28,8 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
     my $reply;
 	my $json = $c->req->body_data;
-	$json->{DW} = encode("gbk",decode("utf8",$json->{DW}));
-	my $sql = "select xn,sum(zgs) zgs from v_gzlcx_gr where dw=\'$json->{DW}\' group by xn order by xn ";
+#	$json->{DW} = encode("gbk",decode("utf8",$json->{DW}));
+	my $sql = "select xn,sum(zgs) zgs from v_gzlcx_gr where dwmc=\'$json->{DWMC}\' group by xn order by xn ";
 	my $data = $c->forward('/urpdb/search', ["$sql"]);                                             
 	if ( $data ) {
 	    $reply->{"RTN_CODE"} = "00";
