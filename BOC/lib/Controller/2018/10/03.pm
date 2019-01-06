@@ -30,8 +30,8 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
     my $json = $c->req->body_data;
     my $reply;
-    $json->{DW} =encode("gbk",decode("utf8",$json->{DW}));
-	my $sql = "select * from v_gzlcx_dw where dw=\'$json->{DW}\'";
+#    $json->{DW} =encode("gbk",decode("utf8",$json->{DW}));
+	my $sql = "select * from v_gzlcx_dw where dwmc=\'$json->{DWMC}\'";
 	my $data = $c->forward('/urpdb/search',["$sql"]);
 	if ( $data ) {
 	    $reply->{"RTN_CODE"} = "00";
