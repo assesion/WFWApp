@@ -29,7 +29,7 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
     my $json = $c->req->body_data;
 	my $reply;
-	my $sql = "select zgh,xm,dw,qx from v_gzlcx_gr where zgh=\'$json->{ZGH}\' order by qx desc";
+	my $sql = "select zgh,xm,dwmc,qx from v_gzlcx_gr where zgh=\'$json->{ZGH}\' order by qx desc";
 	my $data = $c->forward('/urpdb/search', ["$sql"]);
     if ( $data ) {
 	    $reply->{"RTN_CODE"} = "00";
