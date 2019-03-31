@@ -1,0 +1,85 @@
+package FKSQ::Controller::2019::03::30;
+use Moose;
+use namespace::autoclean;
+use JSON;
+use Encode;
+use utf8;
+use  POSIX qw(strftime);
+
+
+BEGIN { extends 'Catalyst::Controller'; }
+$ENV{NLS_LANG} = "SIMPLIFIED CHINESE_CHINA.ZHS16GBK";
+
+=head1 NAME
+
+FKSQ::Controller::2019::03::30 - Catalyst Controller
+
+=head1 DESCRIPTION
+
+Catalyst Controller.
+
+=head1 METHODS
+
+=cut
+
+
+=head2 index
+将副卡申请表格数据写入数据库
+请求参数 {"XM":"张三","ZGH":"123456","DWMC":"单位名称","LXDH":"联系电话","JSXM":"家属姓名","JSXB":"家属性别","JSLXDH":"家属联系电话","JSSFZH":"家属身份证号","QSGX":"亲属关系","BLDD":"办理地点","SQSJ":"申请时间","SFZDZZ":"是否自动转账"}
+响应参数：{"RTN_CODE":"00","RTN_MSG":"成功！"}
+=cut
+
+sub index :Path :Args(0) {
+    my ( $self, $c ) = @_;
+    
+    $c->response->body('Matched FKSQ::Controller::2019::03::30 in 2019::03::30.');
+}
+
+=head2 index
+
+=cut
+
+sub index :Path :Args(0){
+   my($self,$c) = @_;
+	 my $now = strftime "%Y-%m-%d %H:%M:%S", localtime;
+	 my $re = $c->req->body_data;
+	 my $json = from_json($re->{dict});
+	 $json->{JSXB} = encode("gbk",decode("utf8",$json->{JSXB}));
+	 $json->{XM} = encode("gbk",decode("utf8",$json->{XM}));
+	 $json->{DWMC} = encode("gbk",decode("utf8",$json->{DWMC}));
+	 $json->{JSXM} = encode("gbk",decode("utf8",$json->{JSXM}));
+	 $json->{QSGX} = encode("gbk",decode("utf8",$json->{QSGX}));
+	 $json->{BLDD} = encode("gbk",decode("utf8",$json->{BLDD}));
+	 my $reply;
+	 my $sql = "MERGE INTO t_jzg_fksq T1 USING (select \'$json->{XM}\' as xm,\'$json->{ZGH}\' as zgh,\'$json->{DWMC}\' as dwmc,\'$json->{LXDH}\' as lxdh,\'$json->{JSXM}\' as jsxm,\'$json->{JSXB}\' as jsxb,\'$json->{JSLXDH}\' as jslxdh,\'$json->{JSSFZH}\' as jssfzh,\'$json->{QSGX}\' as qsgx,\'$json->{BLDD}\' as bldd,to_date('$now','yyyy-mm-dd hh24:mi:ss')  as sqsj,\'$json->{SFZDZZ}\' as sfzdzz from dual) T2  ON(T1.zgh=T2.zgh) WHEN MATCHED THEN  UPDATE SET T1.xm=T2.xm,T1.dwmc=T2.dwmc,T1.lxdh=T2.lxdh,T1.jsxm=T2.jsxm,T1.jsxb=T2.jsxb,T1.jslxdh=T2.jslxdh,T1.jssfzh=T2.jssfzh,T1.qsgx=T2.qsgx,T1.bldd=T2.bldd,T1.sqsj=T2.sqsj,T1.sfzdzz=T2.sfzdzz WHEN NOT MATCHED THEN INSERT (T1.xm,T1.zgh,T1.dwmc,T1.LXDH,T1.JSXM,T1.JSXB,T1.JSLXDH,T1.JSSFZH,T1.QSGX,T1.BLDD,T1.SQSJ,T1.SFZDZZ) VALUES(T2.xm,T2.zgh,T2.dwmc,T2.lxdh,T2.jsxm,T2.jsxb,T2.jslxdh,T2.jssfzh,T2.qsgx,T2.bldd,T2.sqsj,T2.sfzdzz)";
+   $c->forward('/urpdb/search',["$sql"]);
+	$sql = "select * from t_jzg_fksq where zgh=\'$json->{ZGH}\'";
+	my $data = $c->forward('/urpdb/search',["$sql"]);
+	if ( $data ) {
+	    $reply->{"RTN_CODE"} = "00";
+	    $reply->{"RTN_MSG"} = "成功！";
+	         }
+	 else {
+	    $reply->{"RTN_CODE"} = "01";
+        $reply->{"RTN_MSG"} = "写入失败！";
+	  }
+	$c->response->body(encode_json($reply));
+   }
+
+
+=encoding utf8
+
+=head1 AUTHOR
+
+root
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
+
+__PACKAGE__->meta->make_immutable;
+
+1;
